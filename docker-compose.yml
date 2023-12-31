@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  web:
+    build:
+      context: .
+      target: runtime
+    command: gunicorn --bind 0.0.0.0:8000 --log-level=debug --access-logfile '-' --timeout=120 --graceful-timeout=120 --workers=3 --max-requests=10 --max-requests-jitter=10 --reload config.wsgi
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    profiles: ["web"]
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+    depends_on:
+      web-init:
+        condition: service_completed_successfully
+
+  web-init:
+    build:
+      context: .
+      target: runtime
+    command: python manage.py migrate --noinput
+    volumes:
+      - .:/app
+    profiles: ["web"]
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+    depends_on:
+      - database
+
+  database:
+    image: postgres:15-bookworm
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=home_automation
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    profiles: ["db", "web"]
+
+
+volumes:
+  db-data:
