@@ -1,8 +1,7 @@
-from typing import TypedDict
+from typing import Any, TypedDict
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.views.generic.base import TemplateView, View
 
 from .forms import AddCostForm
@@ -17,12 +16,12 @@ class MonthlyReportContext(TypedDict):
 
 # Create your views here.
 class CostSplitReportView(TemplateView):
-    """View to display a monthly report."""
+    """View to display a CostSplitReport."""
 
     template_name = "report_id.html"
 
     def get_context_data(self, **kwargs: MonthlyReportContext):
-        """View to display a monthly report."""
+        """Adds 'costs' to the context."""
         context = super().get_context_data(**kwargs)
 
         try:
@@ -37,12 +36,15 @@ class CostSplitReportView(TemplateView):
 
 
 class CostsListView(TemplateView):
-    """View to display a monthly report."""
+    """View to display a list of all costs.
+
+    Returns both costs that are included in a monthly report and those that are not.
+    """
 
     template_name = "costs_list.html"
 
-    def get_context_data(self, **kwargs):
-        """View to display a monthly report."""
+    def get_context_data(self, **kwargs: Any):
+        """Add 'unmanaged_costs' and 'managed_costs' to the context."""
         context = super().get_context_data(**kwargs)
 
         unmanaged_costs = Cost.objects.filter(included_in_report=None)
@@ -54,32 +56,31 @@ class CostsListView(TemplateView):
 
 
 class CostSplitReportListView(TemplateView):
-    """View to display a monthly report."""
+    """View to display a list of all CostSplitReports."""
 
     template_name = "report_list.html"
 
-    def get_context_data(self, **kwargs):
-        """View to display a monthly report."""
+    def get_context_data(self, **kwargs: Any):
+        """Adds 'reports' to the context."""
         context = super().get_context_data(**kwargs)
 
         try:
-            report = CostSplitReport.objects.all()
+            reports = CostSplitReport.objects.all()
         except CostSplitReport.DoesNotExist:
-            return {"error": "Monthly report does not exist."}
+            return {"error": "No reports found!"}
 
-        context["reports"] = report
+        context["reports"] = reports
 
         return context
 
 
 class AddCostFormView(View):
-    """View to display a monthly report."""
+    """View to add a new cost using a form."""
 
     template_name = "add_cost_form.html"
 
-    def get(self, request, *args, **kwargs):
-        """View to display a monthly report."""
-
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
+        """GET method to get the form to add a new cost."""
         form = AddCostForm()
         context = {
             "form": form,
@@ -87,9 +88,8 @@ class AddCostFormView(View):
 
         return HttpResponse(render(self.request, self.template_name, context))
 
-    def post(self, request, *args, **kwargs):
-        """View to display a monthly report."""
-
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """POST method to add a new cost."""
         form = AddCostForm(self.request.POST)
         if form.is_valid():
             form.save()
