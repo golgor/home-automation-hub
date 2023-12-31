@@ -28,14 +28,14 @@ class Cost(models.Model):
     A cost is a single entry of a cost that has been paid by one person.
     """
 
-    name = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date = models.DateField()
-    cost = models.FloatField()
-    excluded = models.FloatField(default=0.0)
+    amount = models.FloatField()
+    excluded_amount = models.FloatField(default=0.0)
     description = models.TextField()
-    monthly_report = models.ForeignKey(MonthlyReport, on_delete=models.DO_NOTHING, blank=True)
+    monthly_report = models.ForeignKey(MonthlyReport, on_delete=models.DO_NOTHING, blank=True, default=None, null=True)
 
     def __str__(self):
         """String representation of a cost line item."""
-        return self.name
+        return self.location

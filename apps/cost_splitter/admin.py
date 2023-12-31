@@ -13,14 +13,14 @@ class MonthlyReportAdmin(admin.ModelAdmin[MonthlyReport]):
 
     def summed_cost(self, obj: MonthlyReport):
         """Field to display the summed cost of all costs in a monthly report."""
-        return sum(obj.cost_set.select_related("cost_set").values_list("cost", flat=True))
+        return sum(obj.cost_set.select_related("cost_set").values_list("amount", flat=True))
 
 
 class CostAdmin(admin.ModelAdmin[Cost]):
     """Custom admin class for Cost."""
 
     resource_class = Cost
-    list_display = ["id", "name", "user", "date", "cost", "excluded", "description", "monthly_report"]
+    list_display = ["id", "location", "user", "date", "amount", "excluded_amount", "description", "monthly_report"]
 
 
 admin.site.register(Cost, CostAdmin)

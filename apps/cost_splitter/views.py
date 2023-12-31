@@ -20,22 +20,14 @@ class MonthlyReportView(TemplateView):
 
     def get_context_data(self, **kwargs: MonthlyReportContext):
         """View to display a monthly report."""
-        year = kwargs["year"]
-        month = kwargs["month"]
+        context = super().get_context_data(**kwargs)
 
         try:
-            monthly_report = MonthlyReport.objects.get(date__year=year, date__month=month)
+            monthly_report = MonthlyReport.objects.get(date__year=context["year"], date__month=context["month"])
         except MonthlyReport.DoesNotExist:
-            monthly_report = None
-
-        if monthly_report is None:
             return {"error": "Monthly report does not exist."}
+
         costs = Cost.objects.filter(monthly_report=monthly_report)
-        context = {
-            "year": year,
-            "month": month,
-            "costs": costs,
-        }
-        context2 = super().get_context_data(**kwargs)
-        print(f"Context2: {context2}")
+
+        context["costs"] = costs
         return context
