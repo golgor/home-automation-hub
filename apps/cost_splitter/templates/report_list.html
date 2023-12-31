@@ -13,14 +13,16 @@
         </tr>
         {% for report in reports %}
         <tr>
-            <td>{{ report.id }}</td>
+            <td><a href="{% url 'cost_splitter:report' report.id %}">{{ report.id }}</a></td>
             <td>{{ report.date }}</td>
             <td>{{ report.description }}</td>
         </tr>
         {% endfor %}
     </table>
 
-
+    <a href="{% url 'cost_splitter:add_cost' %}">Add cost</a>
+    <a href="{% url 'cost_splitter:add_report' %}">Add report</a>
+    <a href="{% url 'cost_splitter:list_cost' %}">All costs</a>
 </body>
 
 </html>
