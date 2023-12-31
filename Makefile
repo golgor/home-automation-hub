@@ -1,12 +1,12 @@
-.PHONY: all ci ruff lint check_style coverage test run run_docker docker_up docker_down clean
+.PHONY: all dev ruff lint check_style coverage test run run_docker docker_up docker_down clean
 
 SHELL:=/bin/bash
 RUN=poetry run
 PYTHON=${RUN} python
 
 all:
-	@echo "make ci"
-	@echo "    Create ci environment."
+	@echo "make dev"
+	@echo "    Create dev environment."
 	@echo "make ruff"
 	@echo "    Run 'ruff' to lint project."
 	@echo "make lint"
@@ -32,35 +32,35 @@ all:
 	@echo "make clean"
 	@echo "    Remove python artifacts and virtualenv"
 
-ci:
-	poetry install --with ci --no-root
+dev:
+	poetry install --with dev --no-root
 
 ruff:
 	${RUN} ruff check .
 
-lint: ci ruff
+lint: dev ruff
 	${RUN} mypy .
 
-check_style: ci
+check_style: dev
 	${RUN} ruff format --check --diff .
 
-style: ci
+style: dev
 	${RUN} ruff format .
 
-coverage: ci docker_up
+coverage: dev docker_up
 	${RUN} coverage run -m pytest
 	${RUN} coverage xml
 	${RUN} coverage html
 
 check: check_style lint test
 
-test: ci docker_up
+test: dev docker_up
 	${RUN} pytest .
 
-run: ci docker_up
+run: dev docker_up
 	${PYTHON} manage.py runserver
 
-run_docker: ci
+run_docker: dev
 	docker compose --profile web up --build --attach-dependencies
 
 docker_up:
