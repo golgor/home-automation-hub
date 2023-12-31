@@ -16,5 +16,12 @@ class MonthlyReportAdmin(admin.ModelAdmin[MonthlyReport]):
         return sum(obj.cost_set.select_related("cost_set").values_list("cost", flat=True))
 
 
-admin.site.register(Cost)
+class CostAdmin(admin.ModelAdmin[Cost]):
+    """Custom admin class for Cost."""
+
+    resource_class = Cost
+    list_display = ["id", "name", "user", "date", "cost", "excluded", "description", "monthly_report"]
+
+
+admin.site.register(Cost, CostAdmin)
 admin.site.register(MonthlyReport, MonthlyReportAdmin)
