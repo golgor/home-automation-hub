@@ -1,7 +1,11 @@
 from typing import TypedDict
 
-from django.views.generic.base import TemplateView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.generic.base import TemplateView, View
 
+from .forms import AddCostForm
 from .models import Cost, CostSplitReport
 
 
@@ -37,7 +41,7 @@ class CostsListView(TemplateView):
 
     template_name = "costs_list.html"
 
-    def get_context_data(self, **kwargs: MonthlyReportContext):
+    def get_context_data(self, **kwargs):
         """View to display a monthly report."""
         context = super().get_context_data(**kwargs)
 
@@ -54,7 +58,7 @@ class CostSplitReportListView(TemplateView):
 
     template_name = "report_list.html"
 
-    def get_context_data(self, **kwargs: MonthlyReportContext):
+    def get_context_data(self, **kwargs):
         """View to display a monthly report."""
         context = super().get_context_data(**kwargs)
 
@@ -66,3 +70,28 @@ class CostSplitReportListView(TemplateView):
         context["reports"] = report
 
         return context
+
+
+class AddCostFormView(View):
+    """View to display a monthly report."""
+
+    template_name = "add_cost_form.html"
+
+    def get(self, request, *args, **kwargs):
+        """View to display a monthly report."""
+
+        form = AddCostForm()
+        context = {
+            "form": form,
+        }
+
+        return HttpResponse(render(self.request, self.template_name, context))
+
+    def post(self, request, *args, **kwargs):
+        """View to display a monthly report."""
+
+        form = AddCostForm(self.request.POST)
+        if form.is_valid():
+            form.save()
+
+        return redirect("cost_splitter:list_cost")
