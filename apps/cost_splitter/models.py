@@ -7,19 +7,19 @@ from django.db import models
 User = get_user_model()
 
 
-class MonthlyReport(models.Model):
+class CostSplitReport(models.Model):
     """Model to store monthly reports.
 
     A monthly report is a collection of costs for a specific month and whether they have been paid or not.
     """
 
-    name = models.CharField(max_length=100)
     date = models.DateField()
     cost_set: models.QuerySet[Cost]
+    description = models.TextField(blank=True, default="")
 
     def __str__(self):
         """String representation of a monthly report."""
-        return self.name
+        return str(self.date)
 
 
 class Cost(models.Model):
@@ -34,7 +34,9 @@ class Cost(models.Model):
     amount = models.FloatField()
     excluded_amount = models.FloatField(default=0.0)
     description = models.TextField()
-    monthly_report = models.ForeignKey(MonthlyReport, on_delete=models.DO_NOTHING, blank=True, default=None, null=True)
+    included_in_report = models.ForeignKey(
+        CostSplitReport, on_delete=models.DO_NOTHING, blank=True, default=None, null=True
+    )
 
     def __str__(self):
         """String representation of a cost line item."""

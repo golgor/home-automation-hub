@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1>All Reports</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+        {% for report in reports %}
+        <tr>
+            <td>{{ report.id }}</td>
+            <td>{{ report.date }}</td>
+            <td>{{ report.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</body>
+
+</html>

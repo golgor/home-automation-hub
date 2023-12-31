@@ -1,8 +1,10 @@
 from django.urls import path
 
-from .views import MonthlyReportView
+from .views import CostsListView, CostSplitReportListView, CostSplitReportView
 
 
 urlpatterns = [
-    path("<int:year>/<int:month>/", MonthlyReportView.as_view(), name="monthly_report_view"),
+    path("<int:id>/", CostSplitReportView.as_view(), name="monthly_report_view"),
+    path("", CostSplitReportListView.as_view(), name="monthly_report_view"),
+    path("costs/", CostsListView.as_view(), name="monthly_report_view"),
 ]
