@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1>Report #{{ id }}</h1>
+
+    <table>
+        <tr>
+            <th>Person</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Location</th>
+            <th>Description</th>
+        </tr>
+        {% for cost in costs %}
+        <tr>
+            <td>{{ cost.user.first_name }}</td>
+            <td>{{ cost.date }}</td>
+            <td>{{ cost.amount }}</td>
+            <td>{{ cost.location }}</td>
+            <td>{{ cost.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
+</body>
+
+</html>

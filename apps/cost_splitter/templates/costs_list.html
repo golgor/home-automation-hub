@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1>List of all costs</h1>
+
+    <h2>Managed costs</h2>
+    <table>
+        <tr>
+            <th>Person</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Report ID</th>
+        </tr>
+        {% for cost in managed_costs %}
+        <tr>
+            <td>{{ cost.user.first_name }}</td>
+            <td>{{ cost.date }}</td>
+            <td>{{ cost.amount }}</td>
+            <td>{{ cost.location }}</td>
+            <td>{{ cost.description }}</td>
+            <td>{{ cost.included_in_report.id }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Unmanaged costs</h2>
+    <table>
+        <tr>
+            <th>Person</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Location</th>
+            <th>Description</th>
+        </tr>
+        {% for cost in unmanaged_costs %}
+        <tr>
+            <td>{{ cost.user.first_name }}</td>
+            <td>{{ cost.date }}</td>
+            <td>{{ cost.amount }}</td>
+            <td>{{ cost.location }}</td>
+            <td>{{ cost.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
+</body>
+
+</html>

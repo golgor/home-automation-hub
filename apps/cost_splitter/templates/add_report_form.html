@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>Add Report</h1>
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Save
+
+        </button>
+
+    </form>
+
+    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
+
+</body>
+
+</html>
