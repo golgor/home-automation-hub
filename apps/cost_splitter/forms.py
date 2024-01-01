@@ -12,7 +12,7 @@ class AddCostForm(ModelForm):
         """Meta class for AddCostForm."""
 
         model = Cost
-        fields = ["location", "user", "date", "amount", "excluded_amount", "description"]
+        fields = ["location", "user", "date", "amount", "description"]
 
 
 class AddReportForm(ModelForm):

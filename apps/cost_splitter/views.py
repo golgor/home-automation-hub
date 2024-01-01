@@ -1,11 +1,15 @@
 from typing import Any, TypedDict
 
+from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View
 
 from .forms import AddCostForm, AddReportForm
 from .models import Cost, CostSplitReport
+
+
+User = get_user_model()
 
 
 class MonthlyReportContext(TypedDict):
@@ -81,9 +85,9 @@ class AddCostFormView(View):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
-        form = AddCostForm()
+        users = User.objects.all()
         context = {
-            "form": form,
+            "users": users,
         }
 
         return HttpResponse(render(self.request, self.template_name, context))
