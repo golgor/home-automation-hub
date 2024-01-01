@@ -2,15 +2,24 @@
 
 {% block content %}
 <h1>Add Report</h1>
-<form method="post">
 
+<form action="{% url 'cost_splitter:add_report' %}" method="post">
     {% csrf_token %}
+    <label for="date">Date: </label>
+    <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date"><br>
+    <label for="description">Description: </label>
+    <input id="description" type="text" name="description"><br>
 
-    {{ form.as_p }}
+    <label for="cost_list">Choose costs to include:</label>
+    <select name="cost_list" id="cost_list" multiple>
+        {% for cost in unmanaged_costs %}
+        <option value="{{ cost.id }}">{{ cost }}</option>
+        {% endfor %}
+    </select>
 
-    <button type="submit">Save
-
-    </button>
-
+    <input type="submit" value="Submit">
 </form>
+
+
+
 {% endblock content %}
