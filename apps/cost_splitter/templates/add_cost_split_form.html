@@ -13,13 +13,11 @@
     <label for="cost_list">Choose costs to include:</label>
     <select name="cost_list" id="cost_list" multiple>
         {% for cost in unmanaged_costs %}
-        <option value="{{ cost.id }}">{{ cost }}</option>
+        <option value="{{ cost.id }}">({{ cost.user__first_name }}) - {{ cost.location }} - {{ cost.amount }}</option>
         {% endfor %}
     </select>
 
     <input type="submit" value="Submit">
 </form>
-
-
 
 {% endblock content %}
