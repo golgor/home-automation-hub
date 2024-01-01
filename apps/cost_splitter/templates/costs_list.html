@@ -3,6 +3,7 @@
 {% block content %}
 <h1>List of all costs</h1>
 
+{% if managed_costs %}
 <h2>Managed costs</h2>
 <table>
     <tr>
@@ -23,8 +24,9 @@
         <td>{{ cost.included_in_report.id }}</td>
     </tr>
     {% endfor %}
+    {% endif %}
 </table>
-
+{% if unmanaged_costs %}
 <h2>Unmanaged costs</h2>
 <table>
     <tr>
@@ -43,6 +45,7 @@
         <td>{{ cost.description }}</td>
     </tr>
     {% endfor %}
+    {% endif %}
 </table>
 
 {% endblock content %}
