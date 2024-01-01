@@ -104,7 +104,7 @@ class AddCostFormView(View):
 class AddReportFormView(View):
     """View to add a new report using a form."""
 
-    template_name = "add_report_form.html"
+    template_name = "add_cost_split_form.html"
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
