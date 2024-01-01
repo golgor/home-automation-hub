@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>Report #{{ id }}</h1>
+<p>Created: {{ report.date }}</p>
 
 <table>
     <tr>
@@ -18,6 +19,21 @@
         <td>{{ cost.amount }}</td>
         <td>{{ cost.location }}</td>
         <td>{{ cost.description }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h2>Transactions</h2>
+<table>
+    <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Amount</th>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.from_ }}</td>
+        <td>{{ transaction.to }}</td>
+        <td>{{ transaction.amount }}</td>
     </tr>
     {% endfor %}
 </table>
