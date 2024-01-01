@@ -1,13 +1,97 @@
 body {
-    background-color: lightblue;
+    margin: 0;
+
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
-    color: rgb(240, 10, 10);
+
     text-align: center;
 }
 
 p {
-    font-family: verdana;
     font-size: 20px;
+}
+
+.links-container {
+    display: flex;
+    margin: 0 auto;
+    background-color: #4b82b4;
+    border-bottom: 1px solid #fff;
+    justify-content: space-evenly;
+}
+
+.links-container>a {
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 20px 0;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+
+}
+
+.links-container>a:hover,
+.links-container>a:focus {
+    font-weight: 500;
+    background-color: #b44b82;
+}
+
+.main {
+    max-width: 1400px;
+    display: grid;
+    justify-content: center;
+    margin: auto;
+}
+
+
+form {
+    margin: 0 auto;
+    width: 400px;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 1em;
+}
+
+label span {
+    display: inline-block;
+    text-align: right;
+}
+
+input,
+textarea,
+select {
+    font: 1em sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #999;
+}
+
+
+input:focus,
+textarea:focus {
+    border-color: #000;
+}
+
+textarea {
+    vertical-align: top;
+    height: 5em;
+    resize: vertical;
+}
+
+button {
+    background-color: #82B44B;
+    color: #fff;
+    border-radius: 10px;
+    border-color: #82B44B;
+    padding: 10px 25px;
+}
+
+label {
+    position: relative;
+    display: inline-block;
+}
+
+p label {
+    width: 100%;
 }
