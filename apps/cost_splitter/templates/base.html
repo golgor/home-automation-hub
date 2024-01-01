@@ -3,8 +3,9 @@
 <html>
 
 <head>
-    <title>My Project</title>
+    <title>Cost splitter</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'scripts/top.js' %}"></script>
 </head>
 
 <body>
@@ -12,7 +13,8 @@
     <a href="{% url 'cost_splitter:list_report' %}">Index</a>
     <a href="{% url 'cost_splitter:add_cost' %}">Add cost</a>
     <a href="{% url 'cost_splitter:add_report' %}">Add report</a>
-    <a href="{% url 'cost_splitter:list_cost' %}">All costs</a>
+    <button onclick="myFunction()">Click me!</button>
+    <script src="{% static 'scripts/bottom.js' %}"></script>
 </body>
 
 </html>
