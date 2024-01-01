@@ -21,7 +21,10 @@
         <td>{{ cost.amount }}</td>
         <td>{{ cost.location }}</td>
         <td>{{ cost.description }}</td>
-        <td>{{ cost.included_in_report.id }}</td>
+        <td><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">{{ cost.included_in_report.id }}</a>
+        </td>
+
+
     </tr>
     {% endfor %}
     {% endif %}
