@@ -90,8 +90,5 @@ button {
 label {
     position: relative;
     display: inline-block;
-}
-
-p label {
-    width: 100%;
+    margin-top: 1em;
 }

@@ -5,24 +5,25 @@
 
 <form action="{% url 'cost_splitter:add_cost' %}" method="post">
     {% csrf_token %}
-    <label for="location">Location (?): </label>
-    <input id="location" type="text" name="location"><br>
 
-    <label for="user">Select person:</label>
+
+    <label for="user">Me:</label>
     <select name="user" id="user">
+        <option value="">--Please choose a person--</option>
         {% for user in users %}
         <option value="{{ user.id }}">{{ user.first_name }}</option>
         {% endfor %}
     </select>
+    <label for="location">Paid for (ex.Interspar, Ikea): </label>
+    <input id="location" type="text" name="location">
+    <label for="date">At this date:</label>
+    <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date">
 
-    <label for="date">Date: </label>
-    <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date"><br>
-
-    <label for="amount">Amount: </label>
-    <input id="amount" type="text" name="amount"><br>
+    <label for="amount">This amount: </label>
+    <input id="amount" type="text" name="amount">
 
     <label for="description">Description: </label>
-    <input id="description" type="text" name="description"><br>
+    <textarea id="description" type="text" name="description"> </textarea>
 
     <input type="submit" value="Submit">
 </form>
