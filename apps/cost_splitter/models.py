@@ -35,7 +35,7 @@ class Cost(models.Model):
     excluded_amount = models.FloatField(default=0.0)
     description = models.TextField()
     included_in_report = models.ForeignKey(
-        CostSplitReport, on_delete=models.DO_NOTHING, blank=True, default=None, null=True
+        CostSplitReport, on_delete=models.SET_NULL, blank=True, default=None, null=True
     )
 
     def __str__(self):
