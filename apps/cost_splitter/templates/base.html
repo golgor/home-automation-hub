@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Project</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    {% block content %}{% endblock content %}
+    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
+    <a href="{% url 'cost_splitter:add_cost' %}">Add cost</a>
+    <a href="{% url 'cost_splitter:add_report' %}">Add report</a>
+    <a href="{% url 'cost_splitter:list_cost' %}">All costs</a>
+</body>
+
+</html>

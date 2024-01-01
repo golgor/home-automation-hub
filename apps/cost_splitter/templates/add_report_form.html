@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<body>
-    <h1>Add Report</h1>
-    <form method="post">
+{% block content %}
+<h1>Add Report</h1>
+<form method="post">
 
-        {% csrf_token %}
+    {% csrf_token %}
 
-        {{ form.as_p }}
+    {{ form.as_p }}
 
-        <button type="submit">Save
+    <button type="submit">Save
 
-        </button>
+    </button>
 
-    </form>
-
-    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
-
-</body>
-
-</html>
+</form>
+{% endblock content %}
