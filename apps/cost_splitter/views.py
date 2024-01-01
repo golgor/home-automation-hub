@@ -118,7 +118,7 @@ class AddReportFormView(View):
         form = AddReportForm(self.request.POST)
         if form.is_valid():
             assigned_cost_items = form.cleaned_data["cost_list"]
-            form.save()
-            Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=form.instance)
+            saved_instance = form.save()
+            Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=saved_instance)
 
         return redirect("cost_splitter:list_cost")
