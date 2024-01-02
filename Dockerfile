@@ -23,7 +23,7 @@ RUN useradd -Ms /bin/bash golgor
 # Copy all python packages installed in /runtime in the build, to the runtime image.
 COPY --from=builder /runtime /usr/local
 
-USER golgor
+# USER golgor
 COPY . /app
 WORKDIR /app
 
