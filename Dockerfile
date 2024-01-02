@@ -38,4 +38,4 @@ COPY . /app
 WORKDIR /app
 
 # EXPOSE 8000
-# ENTRYPOINT ["/app/entrypoint.sh"]
+# ENTRYPOINT ["/bin/bash"]
