@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from .views import MainApplicationView
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("cost_splitter/", include(("apps.cost_splitter.urls", "cost_splitter"))),
+    path("cost_splitter/", include(("apps.cost_splitter.urls", "cost_splitter")), name="template2"),
+    path("", MainApplicationView.as_view(), name="main"),
 ]
