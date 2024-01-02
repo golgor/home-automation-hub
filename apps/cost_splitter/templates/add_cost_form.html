@@ -1,22 +1,31 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<body>
-    <h1>Add Cost</h1>
-    <form method="post">
+{% block content %}
+<h1>Add Cost</h1>
 
-        {% csrf_token %}
+<form action="{% url 'cost_splitter:add_cost' %}" method="post">
+    {% csrf_token %}
 
-        {{ form.as_p }}
 
-        <button type="submit">Save
+    <label for="user">Me:</label>
+    <select name="user" id="user">
+        <option value="">--Please choose a person--</option>
+        {% for user in users %}
+        <option value="{{ user.id }}">{{ user.first_name }}</option>
+        {% endfor %}
+    </select>
+    <label for="location">Paid for (ex.Interspar, Ikea): </label>
+    <input id="location" type="text" name="location">
+    <label for="date">At this date:</label>
+    <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date">
 
-        </button>
+    <label for="amount">This amount: </label>
+    <input id="amount" type="text" name="amount">
 
-    </form>
+    <label for="description">Description: </label>
+    <textarea id="description" type="text" name="description"> </textarea>
 
-    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
+    <input type="submit" value="Submit">
+</form>
 
-</body>
-
-</html>
+{% endblock content %}

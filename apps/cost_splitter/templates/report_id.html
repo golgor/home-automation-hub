@@ -1,30 +1,41 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<body>
+{% block content %}
+<h1>Report #{{ id }}</h1>
+<p>Created: {{ report.date }}</p>
 
-    <h1>Report #{{ id }}</h1>
+<table>
+    <tr>
+        <th>Person</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    {% for cost in costs %}
+    <tr>
+        <td>{{ cost.user.first_name }}</td>
+        <td>{{ cost.date }}</td>
+        <td>{{ cost.amount }}</td>
+        <td>{{ cost.location }}</td>
+        <td>{{ cost.description }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h2>Transactions</h2>
+<table>
+    <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Amount</th>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.from_ }}</td>
+        <td>{{ transaction.to }}</td>
+        <td>{{ transaction.amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
-    <table>
-        <tr>
-            <th>Person</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Location</th>
-            <th>Description</th>
-        </tr>
-        {% for cost in costs %}
-        <tr>
-            <td>{{ cost.user.first_name }}</td>
-            <td>{{ cost.date }}</td>
-            <td>{{ cost.amount }}</td>
-            <td>{{ cost.location }}</td>
-            <td>{{ cost.description }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
-</body>
-
-</html>
+{% endblock content %}

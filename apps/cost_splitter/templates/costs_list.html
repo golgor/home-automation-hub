@@ -1,53 +1,54 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<body>
+{% block content %}
+<h1>List of all costs</h1>
 
-    <h1>List of all costs</h1>
+{% if managed_costs %}
+<h2>Managed costs</h2>
+<table>
+    <tr>
+        <th>Person</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Location</th>
+        <th>Description</th>
+        <th>Report ID</th>
+    </tr>
+    {% for cost in managed_costs %}
+    <tr>
+        <td>{{ cost.user.first_name }}</td>
+        <td>{{ cost.date }}</td>
+        <td>{{ cost.amount }}</td>
+        <td>{{ cost.location }}</td>
+        <td>{{ cost.description }}</td>
+        <td><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">{{ cost.included_in_report.id }}</a>
+        </td>
 
-    <h2>Managed costs</h2>
-    <table>
-        <tr>
-            <th>Person</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Location</th>
-            <th>Description</th>
-            <th>Report ID</th>
-        </tr>
-        {% for cost in managed_costs %}
-        <tr>
-            <td>{{ cost.user.first_name }}</td>
-            <td>{{ cost.date }}</td>
-            <td>{{ cost.amount }}</td>
-            <td>{{ cost.location }}</td>
-            <td>{{ cost.description }}</td>
-            <td>{{ cost.included_in_report.id }}</td>
-        </tr>
-        {% endfor %}
-    </table>
 
-    <h2>Unmanaged costs</h2>
-    <table>
-        <tr>
-            <th>Person</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Location</th>
-            <th>Description</th>
-        </tr>
-        {% for cost in unmanaged_costs %}
-        <tr>
-            <td>{{ cost.user.first_name }}</td>
-            <td>{{ cost.date }}</td>
-            <td>{{ cost.amount }}</td>
-            <td>{{ cost.location }}</td>
-            <td>{{ cost.description }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+{% if unmanaged_costs %}
+<h2>Unmanaged costs</h2>
+<table>
+    <tr>
+        <th>Person</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    {% for cost in unmanaged_costs %}
+    <tr>
+        <td>{{ cost.user.first_name }}</td>
+        <td>{{ cost.date }}</td>
+        <td>{{ cost.amount }}</td>
+        <td>{{ cost.location }}</td>
+        <td>{{ cost.description }}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
 
-    <a href="{% url 'cost_splitter:list_report' %}">Index</a>
-</body>
-
-</html>
+{% endblock content %}

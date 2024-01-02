@@ -1,5 +1,7 @@
 from typing import Any, TypedDict
 
+from django.contrib.auth import get_user_model
+from django.db.models import Sum
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View
@@ -8,10 +10,54 @@ from .forms import AddCostForm, AddReportForm
 from .models import Cost, CostSplitReport
 
 
+User = get_user_model()
+
+
 class MonthlyReportContext(TypedDict):
     """Type definition for the extra context passed to the view."""
 
     id: int
+
+
+class Transaction(TypedDict):
+    """Type definition for a transaction."""
+
+    from_: str
+    to: str
+    amount: int
+
+
+def calculate_cost_split(report: CostSplitReport) -> list[Transaction]:
+    """Calculate the cost split for a monthly report."""
+    costs_per_user = (
+        Cost.objects.filter(included_in_report=report)
+        .values("user__id", "user__first_name")
+        .annotate(total=Sum("amount"))
+    )
+    total_cost = Cost.objects.filter(included_in_report=report).aggregate(Sum("amount"))
+    for user in costs_per_user:
+        user["diff"] = user["total"] - (total_cost["amount__sum"] / len(costs_per_user))
+    outstanding_differences = sorted(costs_per_user, key=lambda k: k["diff"], reverse=True)
+
+    transactions: list[Transaction] = []
+
+    while outstanding_differences:
+        highest_diff = outstanding_differences[0]
+        lowest_diff = outstanding_differences[-1]
+        transactions.append(
+            {
+                "to": highest_diff["user__first_name"],
+                "from_": lowest_diff["user__first_name"],
+                "amount": highest_diff["diff"],
+            }
+        )
+        highest_diff["diff"] += lowest_diff["diff"]
+        lowest_diff["diff"] = 0
+        if highest_diff["diff"] >= 0:
+            outstanding_differences.pop()
+        if lowest_diff["diff"] <= 0:
+            outstanding_differences.pop()
+    return transactions
 
 
 # Create your views here.
@@ -28,10 +74,16 @@ class CostSplitReportView(TemplateView):
             report = CostSplitReport.objects.get(id=context["id"])
         except CostSplitReport.DoesNotExist:
             return {"error": "Monthly report does not exist."}
+        try:
+            transactions = calculate_cost_split(report)
+        except Exception as e:
+            print(e)
+            transactions = []
 
         costs = Cost.objects.filter(included_in_report=report)
-
         context["costs"] = costs
+        context["transactions"] = transactions
+        context["report"] = report
         return context
 
 
@@ -81,9 +133,9 @@ class AddCostFormView(View):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
-        form = AddCostForm()
+        users = User.objects.all()
         context = {
-            "form": form,
+            "users": users,
         }
 
         return HttpResponse(render(self.request, self.template_name, context))
@@ -100,13 +152,15 @@ class AddCostFormView(View):
 class AddReportFormView(View):
     """View to add a new report using a form."""
 
-    template_name = "add_report_form.html"
+    template_name = "add_cost_split_form.html"
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
-        form = AddReportForm()
+        unmanaged_costs_items = Cost.objects.filter(included_in_report=None).values(
+            "id", "location", "user__id", "user__first_name", "date", "amount", "excluded_amount", "description"
+        )
         context = {
-            "form": form,
+            "unmanaged_costs": unmanaged_costs_items,
         }
 
         return HttpResponse(render(self.request, self.template_name, context))
@@ -116,7 +170,7 @@ class AddReportFormView(View):
         form = AddReportForm(self.request.POST)
         if form.is_valid():
             assigned_cost_items = form.cleaned_data["cost_list"]
-            form.save()
-            Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=form.instance)
+            saved_instance = form.save()
+            Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=saved_instance)
 
-        return redirect("cost_splitter:list_cost")
+        return redirect("cost_splitter:report", id=saved_instance.id)
