@@ -20,7 +20,7 @@ class CostAdmin(admin.ModelAdmin[Cost]):
     """Custom admin class for Cost."""
 
     resource_class = Cost
-    list_display = ["id", "location", "user", "date", "amount", "excluded_amount", "description", "included_in_report"]
+    list_display = ["id", "location", "user", "date", "amount", "description", "included_in_report"]
 
 
 admin.site.register(Cost, CostAdmin)

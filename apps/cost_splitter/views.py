@@ -157,7 +157,7 @@ class AddReportFormView(View):
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
         unmanaged_costs_items = Cost.objects.filter(included_in_report=None).values(
-            "id", "location", "user__id", "user__first_name", "date", "amount", "excluded_amount", "description"
+            "id", "location", "user__id", "user__first_name", "date", "amount", "description"
         )
         context = {
             "unmanaged_costs": unmanaged_costs_items,
