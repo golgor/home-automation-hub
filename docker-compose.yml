@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-      target: runtime
+      # target: runtime
     command: gunicorn --bind 0.0.0.0:8000 --log-level=debug --access-logfile '-' --timeout=120 --graceful-timeout=120 --workers=3 --max-requests=10 --max-requests-jitter=10 --reload config.wsgi
     ports:
       - "8000:8000"
@@ -21,7 +21,7 @@ services:
   web-init:
     build:
       context: .
-      target: runtime
+      # target: runtime
     command: python manage.py migrate --noinput
     volumes:
       - .:/app
