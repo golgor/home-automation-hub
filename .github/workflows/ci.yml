@@ -1,0 +1,47 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+
+name: Tests & Code Quality
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Build the docker-compose stack
+      run: docker-compose up -d backend-timescale backend-redis rollout-db
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12.1"
+
+    - name: Install poetry
+      uses: abatilo/actions-poetry@v2
+
+    - name: Install dependencies
+      run: make ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Code style check
+      run: make check_style
+
+    - name: Code quality check
+      run: make lint
+
+    - name: Run Migrations
+      run: poetry run python manage.py migrate
+
+    - name: Test & Coverage
+      run: make coverage
