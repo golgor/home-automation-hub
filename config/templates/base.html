@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cost splitter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'scripts/top.js' %}"></script>
+</head>
+
+<body>
+    <div class="links-container">
+        <a href="{% url 'cost_splitter:list_report' %}">Start</a>
+        <a href="{% url 'cost_splitter:add_cost' %}">Add cost</a>
+        <a href="{% url 'cost_splitter:add_report' %}">Create split</a>
+        <a href="{% url 'cost_splitter:list_cost' %}">All costs</a><br>
+    </div>
+    <div class="main">
+        {% block content %}{% endblock content %}
+    </div>
+    <!-- <button onclick="myFunction()">Click me!</button> -->
+    <script src="{% static 'scripts/bottom.js' %}"></script>
+</body>
+
+</html>
