@@ -16,8 +16,10 @@ FROM python:3.12-slim-bookworm AS runtime
 # Install libpq-dev for psycopg3. Alternatively, we could have copied the libpq.so.5 file from the builder image, but this would create an issue to build the image on a different architecture.
 # The libpq-dev package is about 15MB and available for all architectures, so this is the better solution.
 RUN apt update && apt install -y libpq-dev
-# adduser -g "Golgor Homeautomation Hub" -s /usr/sbin/nologin -D -H golgor
+
+# Adding a user to avoid running everything as root.
 RUN useradd -Ms /bin/bash golgor
+
 # Copy all python packages installed in /runtime in the build, to the runtime image.
 COPY --from=builder /runtime /usr/local
 
@@ -25,6 +27,4 @@ USER golgor
 COPY . /app
 WORKDIR /app
 
-# ENTRYPOINT ["/bin/bash"]
-# python -m uvicorn config.asgi:application
 CMD ["uvicorn", "--host", "0.0.0.0", "config.asgi:application"]
