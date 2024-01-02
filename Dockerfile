@@ -37,5 +37,5 @@ COPY --from=builder /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 lib/
 COPY . /app
 WORKDIR /app
 
-EXPOSE 8000
+# EXPOSE 8000
 # ENTRYPOINT ["/app/entrypoint.sh"]
