@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from django.contrib import admin
 
-from .models import Cost, CostSplitReport
+from .models import Cost, CostSplitReport, Transaction
 
 
 class MonthlyReportAdmin(admin.ModelAdmin[CostSplitReport]):
@@ -25,3 +25,4 @@ class CostAdmin(admin.ModelAdmin[Cost]):
 
 admin.site.register(Cost, CostAdmin)
 admin.site.register(CostSplitReport, MonthlyReportAdmin)
+admin.site.register(Transaction)
