@@ -33,15 +33,9 @@ class CostSplitReportView(TemplateView):
             report = CostSplitReport.objects.get(id=context["id"])
         except CostSplitReport.DoesNotExist:
             return {"error": "Monthly report does not exist."}
-        try:
-            transactions = calculate_cost_split(report)
-        except Exception as e:
-            print(e)
-            transactions = []
 
         costs = Cost.objects.filter(included_in_report=report)
         context["costs"] = costs
-        context["transactions"] = transactions
         context["report"] = report
         return context
 

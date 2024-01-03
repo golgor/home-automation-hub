@@ -29,10 +29,10 @@
         <th>To</th>
         <th>Amount</th>
     </tr>
-    {% for transaction in transactions %}
+    {% for transaction in report.transactions.all %}
     <tr>
-        <td>{{ transaction.debtor.name }}</td>
-        <td>{{ transaction.creditor.name }}</td>
+        <td>{{ transaction.debtor.first_name }}</td>
+        <td>{{ transaction.creditor.first_name }}</td>
         <td>{{ transaction.amount }}</td>
     </tr>
     {% endfor %}
