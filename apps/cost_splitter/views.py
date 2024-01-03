@@ -1,7 +1,6 @@
 from typing import Any, TypedDict
 
 from django.contrib.auth import get_user_model
-from django.db.models import Sum
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View

@@ -31,8 +31,8 @@
     </tr>
     {% for transaction in transactions %}
     <tr>
-        <td>{{ transaction.from_ }}</td>
-        <td>{{ transaction.to }}</td>
+        <td>{{ transaction.debtor.name }}</td>
+        <td>{{ transaction.creditor.name }}</td>
         <td>{{ transaction.amount }}</td>
     </tr>
     {% endfor %}
