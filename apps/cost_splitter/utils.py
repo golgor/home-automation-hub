@@ -48,8 +48,8 @@ def minimize_transactions(balances: dict[Person, float]):
 
     1. If the debtor have enough balance, the transaction amount is the total debt of the creditor. The creditor is
         then popped from the list as he/she doesn't have any more credits to gain.
-    2. If the debtor does not have enough balance, the transaction amount is the creditors outstanding balance. The debtor
-        is then popped from the list as he/she does not have any more debts to settle.
+    2. If the debtor does not have enough balance, the transaction amount is the creditors outstanding balance.
+        The debtor is then popped from the list as he/she does not have any more debts to settle.
     3. If the debtor and creditor have the same balance, both are popped from the list as they are settled.
     """
     # Create two lists: one for debtors (negative balance) and one for creditors (positive balance)

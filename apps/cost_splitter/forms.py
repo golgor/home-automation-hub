@@ -1,6 +1,4 @@
-from typing import Any
-
-from django.forms import CheckboxSelectMultiple, ModelForm, MultipleChoiceField
+from django.forms import ModelForm, MultipleChoiceField
 
 from .models import Cost, CostSplitReport
 
