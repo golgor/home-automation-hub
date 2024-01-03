@@ -55,7 +55,7 @@ coverage: dev docker_up
 check: check_style lint test
 
 test: dev docker_up
-	${RUN} pytest .
+	${RUN} pytest . -vv
 
 run: dev docker_up
 	${PYTHON} manage.py runserver
