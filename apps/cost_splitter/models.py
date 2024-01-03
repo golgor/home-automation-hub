@@ -15,6 +15,7 @@ class CostSplitReport(models.Model):
 
     date = models.DateField()
     cost_set: models.QuerySet[Cost]
+    transactions: models.QuerySet[Transaction]
     description = models.TextField(blank=True, default="")
 
     def __str__(self):
@@ -52,7 +53,7 @@ class Transaction(models.Model):
     creditor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="credit_transactions")
     amount = models.FloatField()
     included_in_report = models.ForeignKey(
-        CostSplitReport, on_delete=models.CASCADE, blank=True, default=None, null=True
+        CostSplitReport, on_delete=models.CASCADE, blank=True, default=None, null=True, related_name="transactions"
     )
 
     def __str__(self):
