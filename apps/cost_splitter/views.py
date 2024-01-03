@@ -123,11 +123,8 @@ class AddReportFormView(View):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
-        unmanaged_costs_items = Cost.objects.filter(included_in_report=None).values(
-            "id", "location", "user__id", "user__first_name", "date", "amount", "description"
-        )
         context = {
-            "unmanaged_costs": unmanaged_costs_items,
+            "unmanaged_costs": self.get_unmanaged_costs(),
         }
 
         return HttpResponse(render(self.request, self.template_name, context))
@@ -139,5 +136,17 @@ class AddReportFormView(View):
             assigned_cost_items = form.cleaned_data["cost_list"]
             saved_instance = form.save()
             Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=saved_instance)
+            return redirect("cost_splitter:report", id=saved_instance.id)
 
-        return redirect("cost_splitter:report", id=saved_instance.id)
+        context = {
+            "form": form,
+            "unmanaged_costs": self.get_unmanaged_costs(),
+        }
+        return HttpResponse(render(self.request, self.template_name, context))
+
+    @staticmethod
+    def get_unmanaged_costs():
+        """Get all costs that are not assigned to a monthly report."""
+        return Cost.objects.filter(included_in_report=None).values(
+            "id", "location", "user__id", "user__first_name", "date", "amount", "description"
+        )
