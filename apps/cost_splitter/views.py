@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View
 
 from .forms import AddCostForm, AddReportForm
-from .models import Cost, CostSplitReport
+from .models import Cost, CostSplitReport, Transaction
 from .utils import calculate_cost_split
 
 
@@ -17,14 +17,6 @@ class MonthlyReportContext(TypedDict):
     """Type definition for the extra context passed to the view."""
 
     id: int
-
-
-class Transaction(TypedDict):
-    """Type definition for a transaction."""
-
-    from_: str
-    to: str
-    amount: int
 
 
 # Create your views here.
@@ -134,9 +126,17 @@ class AddReportFormView(View):
         form = AddReportForm(self.request.POST)
         if form.is_valid():
             assigned_cost_items = form.cleaned_data["cost_list"]
-            saved_instance = form.save()
-            Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=saved_instance)
-            return redirect("cost_splitter:report", id=saved_instance.id)
+            report: CostSplitReport = form.save()
+            Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=report)
+            transactions = calculate_cost_split(report)
+            for transaction in transactions:
+                Transaction.objects.create(
+                    debtor=User.objects.get(id=transaction.debtor.person_id),
+                    creditor=User.objects.get(id=transaction.creditor.person_id),
+                    amount=transaction.amount,
+                    included_in_report=report,
+                )
+            return redirect("cost_splitter:report", id=report.pk)
 
         context = {
             "form": form,

@@ -18,7 +18,9 @@ class AddCostForm(ModelForm):
 class AddReportForm(ModelForm):
     """Form used to add a new report."""
 
-    cost_list = MultipleChoiceField(required=True)
+    cost_list = MultipleChoiceField(
+        required=True, choices=Cost.objects.filter(included_in_report=None).values_list("id", "location")
+    )
 
     class Meta:
         """Meta class for AddReportForm."""
