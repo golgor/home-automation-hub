@@ -15,6 +15,7 @@ class CostSplitReport(models.Model):
 
     date = models.DateField()
     cost_set: models.QuerySet[Cost]
+    transactions: models.QuerySet[Transaction]
     description = models.TextField(blank=True, default="")
 
     def __str__(self):
@@ -40,3 +41,21 @@ class Cost(models.Model):
     def __str__(self):
         """String representation of a cost line item."""
         return self.location
+
+
+class Transaction(models.Model):
+    """Model for a transaction.
+
+    Debtor is the person who owes money and is paying to the creditor.
+    """
+
+    debtor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="debit_transactions")
+    creditor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="credit_transactions")
+    amount = models.FloatField()
+    included_in_report = models.ForeignKey(
+        CostSplitReport, on_delete=models.CASCADE, blank=True, default=None, null=True, related_name="transactions"
+    )
+
+    def __str__(self):
+        """String representation of a transaction."""
+        return f"{self.debtor} -> {self.creditor}: {self.amount}"

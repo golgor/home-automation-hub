@@ -21,6 +21,9 @@ uvicorn = "^0.25.0"
 ruff = "^0.1.9"
 mypy = "^1.8.0"
 django-stubs = "^4.2.7"
+pytest = "^7.4.4"
+pytest-django = "^4.7.0"
+coverage = "^7.4.0"
 
 [tool.poetry.group.prod.dependencies]
 psycopg = { extras = ["c"], version = "3.1.16" }
@@ -32,6 +35,30 @@ build-backend = "poetry.core.masonry.api"
 [tool.mypy]
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 
-
 [tool.django-stubs]
 django_settings_module = "config.settings"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]
+
+[tool.coverage.run]
+branch = true
+source = ["apps"]
+data_file = "coverage/.coverage"
+relative_files = true
+
+omit = ["*/tests/*", "*/migrations/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == .__main__.:",
+    "pragma: no cover",
+    "test_performance_of_the_post_processing",
+]
+
+[tool.coverage.html]
+directory = "coverage/html"
+
+[tool.coverage.xml]
+output = "coverage/coverage.xml"
