@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -52,6 +54,7 @@ class Transaction(models.Model):
     debtor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="debit_transactions")
     creditor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="credit_transactions")
     amount = models.FloatField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     included_in_report = models.ForeignKey(
         CostSplitReport, on_delete=models.CASCADE, blank=True, default=None, null=True, related_name="transactions"
     )
