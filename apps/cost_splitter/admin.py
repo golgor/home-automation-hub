@@ -23,6 +23,13 @@ class CostAdmin(admin.ModelAdmin[Cost]):
     list_display = ["id", "location", "user", "date", "amount", "description", "included_in_report"]
 
 
+class TransactionAdmin(admin.ModelAdmin[Transaction]):
+    """Custom admin class for Cost."""
+
+    resource_class = Transaction
+    list_display = ["id", "debtor", "creditor", "amount", "included_in_report", "uuid"]
+
+
 admin.site.register(Cost, CostAdmin)
 admin.site.register(CostSplitReport, MonthlyReportAdmin)
-admin.site.register(Transaction)
+admin.site.register(Transaction, TransactionAdmin)

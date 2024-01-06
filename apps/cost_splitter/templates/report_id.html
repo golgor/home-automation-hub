@@ -28,12 +28,14 @@
         <th>From</th>
         <th>To</th>
         <th>Amount</th>
+        <th>Reference</th>
     </tr>
     {% for transaction in report.transactions.all %}
     <tr>
         <td>{{ transaction.debtor.first_name }}</td>
         <td>{{ transaction.creditor.first_name }}</td>
         <td>{{ transaction.amount }}</td>
+        <td>{{ transaction.uuid }}</td>
     </tr>
     {% endfor %}
 </table>
