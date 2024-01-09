@@ -52,8 +52,8 @@ class CostsListView(TemplateView):
         """Add 'unmanaged_costs' and 'managed_costs' to the context."""
         context = super().get_context_data(**kwargs)
 
-        unmanaged_costs = Cost.objects.filter(included_in_report=None)
-        managed_costs = Cost.objects.exclude(included_in_report=None)
+        unmanaged_costs = Cost.objects.filter(included_in_report=None).order_by("user", "date")
+        managed_costs = Cost.objects.exclude(included_in_report=None).order_by("user", "date")
 
         context["unmanaged_costs"] = unmanaged_costs
         context["managed_costs"] = managed_costs
