@@ -102,7 +102,7 @@ class AddCostFormView(View):
         return redirect("cost_splitter:list_cost")
 
 
-class AddReportFormView(View):
+class AddCostSplitFormView(View):
     """View to add a new report using a form."""
 
     template_name = "add_cost_split_form.html"
@@ -122,7 +122,8 @@ class AddReportFormView(View):
             assigned_cost_items = form.cleaned_data["cost_list"]
             report: CostSplitReport = form.save()
             Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=report)
-            transactions = calculate_cost_split(report)
+            transactions = calculate_cost_split(report.pk)
+
             for transaction in transactions:
                 Transaction.objects.create(
                     debtor=User.objects.get(id=transaction.debtor.person_id),

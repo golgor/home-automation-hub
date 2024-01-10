@@ -1,20 +1,20 @@
 from django.db.models import Sum
 
-from .models import Cost, CostSplitReport
+from .models import Cost
 from .types import Person, Transaction
 
 
-def calculate_cost_split(report: CostSplitReport) -> list[Transaction]:
+def calculate_cost_split(report_id: int) -> list[Transaction]:
     """Calculate the cost split for a monthly report."""
-    expenses = get_total_expenses(report)
+    expenses = get_total_expenses(report_id)
     balances = calculate_balances(expenses)
     return minimize_transactions(balances)
 
 
-def get_total_expenses(report: CostSplitReport) -> dict[Person, float]:
+def get_total_expenses(report_id: int) -> dict[Person, float]:
     """Get total expenses for each person."""
     expenses_per_person = (
-        Cost.objects.filter(included_in_report=report)
+        Cost.objects.filter(included_in_report=report_id)
         .values("user__id", "user__first_name")
         .annotate(total=Sum("amount"))
     )
