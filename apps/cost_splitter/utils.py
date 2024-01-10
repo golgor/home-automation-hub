@@ -1,23 +1,36 @@
+import typing
+from typing import Any
+
 from django.db.models import Sum
 
 from .models import Cost
 from .types import Person, Transaction
 
 
-def calculate_cost_split(report_id: int) -> list[Transaction]:
+if typing.TYPE_CHECKING:
+    from django.db.models.query import ValuesQuerySet
+
+
+def calculate_cost_split_for_report(report_id: int) -> list[Transaction]:
     """Calculate the cost split for a monthly report."""
-    expenses = get_total_expenses(report_id)
-    balances = calculate_balances(expenses)
-    return minimize_transactions(balances)
-
-
-def get_total_expenses(report_id: int) -> dict[Person, float]:
-    """Get total expenses for each person."""
     expenses_per_person = (
         Cost.objects.filter(included_in_report=report_id)
         .values("user__id", "user__first_name")
         .annotate(total=Sum("amount"))
     )
+    expenses = get_total_expenses(expenses_per_person)
+    balances = calculate_balances(expenses)
+    return minimize_transactions(balances)
+
+
+def calculate_cost_split_for_list_of_costs(costs: "ValuesQuerySet[Cost, dict[str, Any]]") -> list[Transaction]:
+    expenses = get_total_expenses(costs)
+    balances = calculate_balances(expenses)
+    return minimize_transactions(balances)
+
+
+def get_total_expenses(expenses_per_person: "ValuesQuerySet[Cost, dict[str, Any]]") -> dict[Person, float]:
+    """Get total expenses for each person."""
     return {
         Person(person_id=entry["user__id"], name=entry["user__first_name"]): entry["total"]
         for entry in expenses_per_person

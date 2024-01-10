@@ -1,13 +1,14 @@
 from typing import Any, TypedDict
 
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView, View
 
 from .forms import AddCostForm, AddReportForm
 from .models import Cost, CostSplitReport, Transaction
-from .utils import calculate_cost_split
+from .utils import calculate_cost_split_for_list_of_costs, calculate_cost_split_for_report
 
 
 User = get_user_model()
@@ -55,8 +56,17 @@ class CostsListView(TemplateView):
         unmanaged_costs = Cost.objects.filter(included_in_report=None).order_by("user", "date")
         managed_costs = Cost.objects.exclude(included_in_report=None).order_by("user", "date")
 
+        expenses_per_person = (
+            Cost.objects.filter(included_in_report=None)
+            .values("user__id", "user__first_name")
+            .annotate(total=Sum("amount"))
+        )
+
+        transactions = calculate_cost_split_for_list_of_costs(expenses_per_person)
+
         context["unmanaged_costs"] = unmanaged_costs
         context["managed_costs"] = managed_costs
+        context["transactions"] = transactions
         return context
 
 
@@ -122,7 +132,7 @@ class AddCostSplitFormView(View):
             assigned_cost_items = form.cleaned_data["cost_list"]
             report: CostSplitReport = form.save()
             Cost.objects.filter(id__in=assigned_cost_items).update(included_in_report=report)
-            transactions = calculate_cost_split(report.pk)
+            transactions = calculate_cost_split_for_report(report.pk)
 
             for transaction in transactions:
                 Transaction.objects.create(
