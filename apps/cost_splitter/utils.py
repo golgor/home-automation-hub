@@ -1,40 +1,47 @@
-import typing
-from typing import Any
-
 from django.db.models import Sum
 
 from .models import Cost
 from .types import Person, Transaction
 
 
-if typing.TYPE_CHECKING:
-    from django.db.models.query import ValuesQuerySet
+def get_costs_from_report(report_id: int | None) -> dict[Person, float]:
+    """Get all costs per person.
 
+    Gets all costs included in a monthly report if report_id is not None, otherwise gets all unmanaged costs.
+    Uses annotations to summarize the costs per person and transform the result into a dictionary such as:
+    {
+        Person(person_id=1, name="Alice"): 10,
+        Person(person_id=2, name="Bob"): 20,
+    }
 
-def calculate_cost_split_for_report(report_id: int) -> list[Transaction]:
-    """Calculate the cost split for a monthly report."""
+    Args:
+        report_id (int | None): The id of a CostSplitReport or None.
+
+    Returns:
+        dict[Person, float]: A dict with a Person-object as key and the total expenses as value.
+    """
     expenses_per_person = (
         Cost.objects.filter(included_in_report=report_id)
         .values("user__id", "user__first_name")
         .annotate(total=Sum("amount"))
     )
-    expenses = get_total_expenses(expenses_per_person)
-    balances = calculate_balances(expenses)
-    return minimize_transactions(balances)
-
-
-def calculate_cost_split_for_list_of_costs(costs: "ValuesQuerySet[Cost, dict[str, Any]]") -> list[Transaction]:
-    expenses = get_total_expenses(costs)
-    balances = calculate_balances(expenses)
-    return minimize_transactions(balances)
-
-
-def get_total_expenses(expenses_per_person: "ValuesQuerySet[Cost, dict[str, Any]]") -> dict[Person, float]:
-    """Get total expenses for each person."""
     return {
         Person(person_id=entry["user__id"], name=entry["user__first_name"]): entry["total"]
         for entry in expenses_per_person
     }
+
+
+def calculate_cost_split_for_list_of_costs(expenses: dict[Person, float]) -> list[Transaction]:
+    """Performs a cost split for the given list of costs and returns a list of transactions to settle the debts.
+
+    Args:
+        expenses (dict[Person, float]): A dict with a Person-object as key and the total expenses as value.
+
+    Returns:
+        list[Transaction]: A list of transactions to settle the debts.
+    """
+    balances = calculate_balances(expenses)
+    return minimize_transactions(balances)
 
 
 def calculate_balances(expenses: dict[Person, float]) -> dict[Person, float]:
