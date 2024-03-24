@@ -1,7 +1,7 @@
 .PHONY: all dev ruff lint check_style coverage test run run_docker docker_up docker_down clean
 
 SHELL:=/bin/bash
-RUN=poetry run
+RUN=rye run
 PYTHON=${RUN} python
 
 all:
@@ -33,21 +33,21 @@ all:
 	@echo "    Remove python artifacts and virtualenv"
 
 dev:
-	poetry install --with dev --no-root
+	rye sync
 
-ruff:
-	${RUN} ruff check .
+lint:
+	rye lint --fix
 
-lint: dev ruff
+types: dev ruff
 	${RUN} mypy .
 
 check_style: dev
-	${RUN} ruff format --check --diff .
+	rye fmt --check
 
 style: dev
-	${RUN} ruff format .
+	rye fmt
 
-coverage: dev docker_up
+coverage: docker_up
 	${RUN} coverage run -m pytest
 	${RUN} coverage xml
 	${RUN} coverage html
