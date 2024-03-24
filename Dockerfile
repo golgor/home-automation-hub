@@ -27,4 +27,4 @@ COPY --from=builder /runtime /usr/local
 COPY . /app
 WORKDIR /app
 
-CMD ["uvicorn", "--host", "0.0.0.0", "--reload", "--reload-include", "*.html", "--reload-include", "*.css", "--reload-include", "*.js", "config.asgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--reload", "config.wsgi"]
