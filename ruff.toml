@@ -1,36 +1,36 @@
 # Checks to add: ANN (Type annotation), A (Built-in Shadowing), DJ (Django), INP (Missing __init__), PT (PyTest), Tryceratops (TRY)
-select = [
-    "E",    # pycodestyle
-    "F",    # PyFlakes
-    "W",    # pycodestyle
-    "I",    # isort
-    "D",    # pydocstyle
-    "PL",   # Pylint
-    "C90",  # mccabe
-    "UP",   # pyupgrade
-    "N",    # pep8-naming
-    "S",    # flake8-bandit
-    "Q",    # flake8-quotes
-    "RET",  # flake8-return
-    "PTH",  # flake8-use-pathlib
-    "C4",   # flake8-comprehensions
-    "ISC",  # flake8-implicit-str-concat
-    "G",    # flake8-logging-format
-    "TCH",  # flake8-type-checking
-    "T20",  # flake8-print
-    "DTZ",  # flake8-datetimez
-    "SIM",  # flake8-simplify
-    "A",    # flake8-builtins
-    "B",    # flake8-bugbear
-    "ERA",  # eradicate
-    "RUF",  # Ruff-specific rules
-    "UP"
+lint.select = [
+    "E",   # pycodestyle
+    "F",   # PyFlakes
+    "W",   # pycodestyle
+    "I",   # isort
+    "D",   # pydocstyle
+    "PL",  # Pylint
+    "C90", # mccabe
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "S",   # flake8-bandit
+    "Q",   # flake8-quotes
+    "RET", # flake8-return
+    "PTH", # flake8-use-pathlib
+    "C4",  # flake8-comprehensions
+    "ISC", # flake8-implicit-str-concat
+    "G",   # flake8-logging-format
+    "TCH", # flake8-type-checking
+    "T20", # flake8-print
+    "DTZ", # flake8-datetimez
+    "SIM", # flake8-simplify
+    "A",   # flake8-builtins
+    "B",   # flake8-bugbear
+    "ERA", # eradicate
+    "RUF", # Ruff-specific rules
+    "UP",
 ]
 
-ignore = ["D104", "D100", "RUF012", "S101" ,"ISC001"]
+lint.ignore = ["D104", "D100", "RUF012", "S101", "ISC001"]
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
-fixable = [
+lint.fixable = [
     "A",
     "B",
     "C",
@@ -76,7 +76,7 @@ fixable = [
     "UP",
     "YTT",
 ]
-unfixable = []
+lint.unfixable = []
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -110,20 +110,20 @@ exclude = [
 line-length = 120
 
 # Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 # Assume Python 3.11.
-target-version = "py311"
+target-version = "py312"
 
-[mccabe]
+[lint.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
-[pydocstyle]
+[lint.pydocstyle]
 # Use Google-style docstrings.
 convention = "google"
 
-[isort]
+[lint.isort]
 lines-after-imports = 2
 
 [format]
