@@ -7,8 +7,6 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    replaces = [('cost_splitter', '0001_add_cost_and_report'), ('cost_splitter', '0002_costsplitreport_remove_cost_monthly_report_and_more')]
-
     initial = True
 
     dependencies = [

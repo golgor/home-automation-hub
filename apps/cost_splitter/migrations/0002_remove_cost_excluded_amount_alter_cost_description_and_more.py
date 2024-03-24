@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cost_splitter', '0001_add_cost_and_split_report'),
+        ('cost_splitter', '0001_initial'),
     ]
 
     operations = [
