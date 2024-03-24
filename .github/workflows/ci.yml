@@ -41,7 +41,7 @@ jobs:
       run: make types
 
     - name: Run Migrations
-      run: poetry run python manage.py migrate
+      run: rye run python manage.py migrate
 
     - name: Test & Coverage
       run: make coverage
