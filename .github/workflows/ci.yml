@@ -41,7 +41,7 @@ jobs:
       run: make types
 
     - name: Run Migrations
-      run: rye run python manage.py migrate
+      run: rye run python manage.py migrate --skip-checks
 
     - name: Test & Coverage
       run: make coverage
