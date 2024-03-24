@@ -29,6 +29,8 @@ all:
 	@echo "    Starts all docker-compose services, except web."
 	@echo "make docker_down"
 	@echo "    Stop all docker-compose services."
+	@echo "make initial_migration"
+	@echo "    Setting up all the tables in the database from scratch."
 	@echo "make clean"
 	@echo "    Remove python artifacts and virtualenv"
 
@@ -68,6 +70,9 @@ docker_up:
 
 docker_down:
 	docker compose --profile web down
+
+initial_migration:
+	${RUN} ./manage.py migrate --skip-checks
 
 clean: docker_down
 	poetry env remove --all
