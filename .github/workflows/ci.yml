@@ -19,7 +19,7 @@ jobs:
         fetch-depth: 0
 
     - name: Build the docker-compose stack
-      run: docker-compose up -d backend-timescale backend-redis rollout-db
+      run: docker-compose up -d database web
 
     - name: Install the latest version of rye
       uses: eifinger/setup-rye@v2
