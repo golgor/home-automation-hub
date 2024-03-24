@@ -7,6 +7,13 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+env:
+  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  DB_NAME: ${{ vars.DB_NAME }}
+  DB_HOST: ${{ vars.DB_HOST }}
+  DB_PORT: ${{ vars.DB_PORT }}
+  DB_USER: ${{ vars.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   build:
