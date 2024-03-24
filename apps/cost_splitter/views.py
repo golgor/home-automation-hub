@@ -1,4 +1,3 @@
-from logging import getLogger
 from typing import Any, TypedDict
 
 from django.contrib.auth import get_user_model
@@ -12,8 +11,6 @@ from .utils import calculate_cost_split_for_list_of_costs, get_costs_from_report
 
 
 User = get_user_model()
-
-logger = getLogger(__name__)
 
 
 class MonthlyReportContext(TypedDict):
@@ -146,7 +143,6 @@ class AddCostSplitFormView(View):
             "form": form,
             "unmanaged_costs": self.get_unmanaged_costs(),
         }
-        logger.error("Form is not valid!", extra={"errors": form.errors, "context": context})
         return HttpResponse(render(self.request, self.template_name, context))
 
     @staticmethod
