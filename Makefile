@@ -36,6 +36,9 @@ dev:
 	rye sync
 
 lint:
+	rye lint
+
+lint-fix:
 	rye lint --fix
 
 types: dev ruff
