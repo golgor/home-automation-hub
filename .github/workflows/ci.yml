@@ -21,24 +21,17 @@ jobs:
     - name: Build the docker-compose stack
       run: docker-compose up -d backend-timescale backend-redis rollout-db
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.12.1"
+    - name: Install the latest version of rye
+      uses: eifinger/setup-rye@v2
 
-    - name: Install poetry
-      uses: abatilo/actions-poetry@v2
+    - name: Setup virtual environment & Dependencies
+      run: rye sync
 
-    - name: Install dependencies
-      run: make ci
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Code style & lint check
+      run: make check
 
-    - name: Code style check
-      run: make check_style
-
-    - name: Code quality check
-      run: make lint
+    - name: Code Static Analysis
+      run: make types
 
     - name: Run Migrations
       run: poetry run python manage.py migrate

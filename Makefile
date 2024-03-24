@@ -52,7 +52,7 @@ coverage: docker_up
 	${RUN} coverage xml
 	${RUN} coverage html
 
-check: check_style lint test
+check: check_style lint
 
 test: dev docker_up
 	${RUN} pytest . -vv
