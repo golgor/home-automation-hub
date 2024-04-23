@@ -1,3 +1,6 @@
+from typing import Any
+
+from asgiref.sync import async_to_sync, sync_to_async
 from django.forms import ModelForm, MultipleChoiceField
 
 from .models import Cost, CostSplitReport
@@ -16,9 +19,12 @@ class AddCostForm(ModelForm):
 class AddReportForm(ModelForm):
     """Form used to add a new report."""
 
-    cost_list = MultipleChoiceField(
-        required=True, choices=Cost.objects.filter(included_in_report=None).values_list("id", "location")
-    )
+    def __init__(self, *args: Any, **kwargs: Any):
+        """Initialize the form."""
+        super().__init__(*args, **kwargs)
+        self.fields["cost_list"] = MultipleChoiceField(
+            required=True, choices=Cost.objects.filter(included_in_report=None).values_list("id", "location")
+        )
 
     class Meta:
         """Meta class for AddReportForm."""
