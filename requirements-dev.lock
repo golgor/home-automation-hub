@@ -14,6 +14,8 @@ certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
+click==8.1.7
+    # via uvicorn
 coverage==7.4.4
 django==5.0.3
     # via django-cors-headers
@@ -29,7 +31,8 @@ django-stubs-ext==4.2.7
 djangorestframework==3.15.1
     # via django-rest-framework
 djangorestframework-stubs==3.14.5
-gunicorn==21.2.0
+h11==0.14.0
+    # via uvicorn
 idna==3.6
     # via requests
 iniconfig==2.0.0
@@ -38,7 +41,6 @@ mypy==1.9.0
 mypy-extensions==1.0.0
     # via mypy
 packaging==24.0
-    # via gunicorn
     # via pytest
 pluggy==1.4.0
     # via pytest
@@ -69,3 +71,4 @@ typing-extensions==4.10.0
 urllib3==2.2.1
     # via requests
     # via types-requests
+uvicorn==0.29.0
