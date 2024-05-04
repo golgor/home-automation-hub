@@ -11,7 +11,11 @@
     <select name="user" id="user">
         <option value="">--Please choose a person--</option>
         {% for user in users %}
+        {% if form.cleaned_data.user.id == user.id %}
+        <option value="{{ user.id }}" selected>{{ user.first_name }}</option>
+        {% else %}
         <option value="{{ user.id }}">{{ user.first_name }}</option>
+        {% endif %}
         {% endfor %}
     </select>
     {% for error in form.errors.user %}
