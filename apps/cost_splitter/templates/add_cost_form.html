@@ -11,16 +11,31 @@
     <select name="user" id="user">
         <option value="">--Please choose a person--</option>
         {% for user in users %}
+        {% if form.cleaned_data.user.id == user.id %}
+        <option value="{{ user.id }}" selected>{{ user.first_name }}</option>
+        {% else %}
         <option value="{{ user.id }}">{{ user.first_name }}</option>
+        {% endif %}
         {% endfor %}
     </select>
-    <label for="location">Paid for (ex.Interspar, Ikea): </label>
-    <input id="location" type="text" name="location">
+    {% for error in form.errors.user %}
+    {{ error }} <br>
+    {% endfor %}
+
+    <label for=" location">Paid for (ex.Interspar, Ikea): </label>
+    <input id="location" type="text" name="location" value="{{ form.cleaned_data.location }}">
+    {% for error in form.errors.location %}
+    {{ error }} <br>
+    {% endfor %}
+
     <label for="date">At this date:</label>
-    <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date">
+    <input id="date" type="date" value="{{ date.today }}" min="{{ date.min }}" max="{{ date.max }}" name="date">
 
     <label for="amount">This amount: </label>
-    <input id="amount" type="text" name="amount">
+    <input id="amount" type="text" name="amount" value="{{ form.cleaned_data.amount }}">
+    {% for error in form.errors.amount %}
+    {{ error }} <br>
+    {% endfor %}
 
     <label for="description">Description: </label>
     <textarea id="description" type="text" name="description"> </textarea>

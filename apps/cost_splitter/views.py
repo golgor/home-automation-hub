@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
 from logging import getLogger
 from typing import Any, TypedDict
+from zoneinfo import ZoneInfo
 
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
@@ -91,23 +93,29 @@ class AddCostFormView(View):
     """View to add a new cost using a form."""
 
     template_name = "add_cost_form.html"
+    context: dict[str, Any] = {}
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
         users = User.objects.all()
-        context = {
-            "users": users,
+        self.context["form"] = None
+        self.context["date"] = {
+            "today": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date()),
+            "min": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() - timedelta(weeks=12)),
+            "max": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() + timedelta(days=365)),
         }
+        self.context["users"] = users
 
-        return HttpResponse(render(self.request, self.template_name, context))
+        return HttpResponse(render(self.request, self.template_name, self.context))
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """POST method to add a new cost."""
         form = AddCostForm(self.request.POST)
         if form.is_valid():
             form.save()
-
-        return redirect("cost_splitter:list_cost")
+            return redirect("cost_splitter:list_cost")
+        self.context["form"] = form
+        return HttpResponse(render(self.request, self.template_name, self.context))
 
 
 class AddCostSplitFormView(View):
