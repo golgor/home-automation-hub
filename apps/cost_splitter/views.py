@@ -91,15 +91,15 @@ class AddCostFormView(View):
     """View to add a new cost using a form."""
 
     template_name = "add_cost_form.html"
+    context: dict[str, Any] = {}
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
         users = User.objects.all()
-        context = {
-            "users": users,
-        }
+        self.context["form"] = None
+        self.context["users"] = users
 
-        return HttpResponse(render(self.request, self.template_name, context))
+        return HttpResponse(render(self.request, self.template_name, self.context))
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """POST method to add a new cost."""
