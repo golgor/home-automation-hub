@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
 from logging import getLogger
 from typing import Any, TypedDict
+from zoneinfo import ZoneInfo
 
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
@@ -97,6 +99,11 @@ class AddCostFormView(View):
         """GET method to get the form to add a new cost."""
         users = User.objects.all()
         self.context["form"] = None
+        self.context["date"] = {
+            "today": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date()),
+            "min": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() - timedelta(weeks=12)),
+            "max": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() + timedelta(days=365)),
+        }
         self.context["users"] = users
 
         return HttpResponse(render(self.request, self.template_name, self.context))
