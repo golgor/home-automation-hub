@@ -106,8 +106,9 @@ class AddCostFormView(View):
         form = AddCostForm(self.request.POST)
         if form.is_valid():
             form.save()
-
-        return redirect("cost_splitter:list_cost")
+            return redirect("cost_splitter:list_cost")
+        self.context["form"] = form
+        return HttpResponse(render(self.request, self.template_name, self.context))
 
 
 class AddCostSplitFormView(View):
