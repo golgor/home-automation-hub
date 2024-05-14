@@ -93,12 +93,30 @@ textarea {
     resize: vertical;
 }
 
-button {
+button,
+.btn {
     background-color: #82B44B;
     color: #fff;
     border-radius: 10px;
-    border-color: #82B44B;
+    border: none;
     padding: 10px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    margin: 20px 0;
+}
+
+button:hover,
+.btn:hover {
+    background-color: #6fa53b;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
 }
 
 label {
