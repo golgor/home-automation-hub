@@ -3,12 +3,14 @@
 {% block content %}
 <h1>All Reports</h1>
 
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Date</th>
-        <th>Description</th>
-    </tr>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
     {% for report in reports %}
     <tr>
         <td><a href="{% url 'cost_splitter:report' report.id %}">{{ report.id }}</a></td>
