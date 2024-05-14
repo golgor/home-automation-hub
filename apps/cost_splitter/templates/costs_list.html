@@ -5,36 +5,32 @@
 
 {% if managed_costs %}
 <section>
-    <h2>
-        <button class="collapsible">Managed Costs</button>
-    </h2>
-    <div class="content">
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>Person</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Location</th>
-                    <th>Description</th>
-                    <th>Report ID</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for cost in managed_costs %}
-                <tr>
-                    <td data-label="Person">{{ cost.user.first_name }}</td>
-                    <td data-label="Date">{{ cost.date }}</td>
-                    <td data-label="Amount">{{ cost.amount }}</td>
-                    <td data-label="Location">{{ cost.location }}</td>
-                    <td data-label="Description">{{ cost.description }}</td>
-                    <td data-label="Report ID"><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">
-                            {{ cost.included_in_report.id }}</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <h2>Managed Costs</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Person</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Report ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cost in managed_costs %}
+            <tr>
+                <td data-label="Person">{{ cost.user.first_name }}</td>
+                <td data-label="Date">{{ cost.date }}</td>
+                <td data-label="Amount">{{ cost.amount }}</td>
+                <td data-label="Location">{{ cost.location }}</td>
+                <td data-label="Description">{{ cost.description }}</td>
+                <td data-label="Report ID"><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">
+                        {{ cost.included_in_report.id }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </section>
 {% endif %}
 
