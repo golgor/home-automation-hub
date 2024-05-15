@@ -1,70 +1,96 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>List of all costs</h1>
+<h1>List of All Costs</h1>
 
 {% if managed_costs %}
-<h2>Managed costs</h2>
-<table>
-    <tr>
-        <th>Person</th>
-        <th>Date</th>
-        <th>Amount</th>
-        <th>Location</th>
-        <th>Description</th>
-        <th>Report ID</th>
-    </tr>
-    {% for cost in managed_costs %}
-    <tr>
-        <td>{{ cost.user.first_name }}</td>
-        <td>{{ cost.date }}</td>
-        <td>{{ cost.amount }}</td>
-        <td>{{ cost.location }}</td>
-        <td>{{ cost.description }}</td>
-        <td><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">{{ cost.included_in_report.id }}</a>
-        </td>
-
-
-    </tr>
-    {% endfor %}
-    {% endif %}
-</table>
-{% if unmanaged_costs %}
-<h2>Unmanaged costs</h2>
-<table>
-    <tr>
-        <th>Person</th>
-        <th>Date</th>
-        <th>Amount</th>
-        <th>Location</th>
-        <th>Description</th>
-    </tr>
-    {% for cost in unmanaged_costs %}
-    <tr>
-        <td>{{ cost.user.first_name }}</td>
-        <td>{{ cost.date }}</td>
-        <td>{{ cost.amount }}</td>
-        <td>{{ cost.location }}</td>
-        <td>{{ cost.description }}</td>
-    </tr>
-    {% endfor %}
-
-</table>
-
-<h2>Necessary transactions</h2>
-<table>
-    <tr>
-        <th>From</th>
-        <th>To</th>
-        <th>Amount</th>
-    </tr>
-    {% for transaction in transactions %}
-    <tr>
-        <td>{{ transaction.debtor.name }}</td>
-        <td>{{ transaction.creditor.name }}</td>
-        <td>{{ transaction.amount }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<section>
+    <h2>Managed Costs</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Person</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Report ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cost in managed_costs %}
+            <tr>
+                <td data-label="Person">{{ cost.user.first_name }}</td>
+                <td data-label="Date">{{ cost.date }}</td>
+                <td data-label="Amount">{{ cost.amount }}</td>
+                <td data-label="Location">{{ cost.location }}</td>
+                <td data-label="Description">{{ cost.description }}</td>
+                <td data-label="Report ID"><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">
+                        {{ cost.included_in_report.id }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
 {% endif %}
+
+{% if unmanaged_costs %}
+<section>
+    <h2>Unmanaged Costs</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Person</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Location</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cost in unmanaged_costs %}
+            <tr>
+                <td data-label="Person">{{ cost.user.first_name }}</td>
+                <td data-label="Date">{{ cost.date }}</td>
+                <td data-label="Amount">{{ cost.amount }}</td>
+                <td data-label="Location">{{ cost.location }}</td>
+                <td data-label="Description">{{ cost.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% else %}
+<p>No unmanaged costs available.</p>
+{% endif %}
+
+{% if transactions %}
+<section>
+    <h2>Necessary Transactions</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td data-label="From">{{ transaction.debtor.name }}</td>
+                <td data-label="To">{{ transaction.creditor.name }}</td>
+                <td data-label="Amount">{{ transaction.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+
+<!-- Add the new button here -->
+<div class="button-container">
+    <a href="{% url 'cost_splitter:add_cost' %}" class="btn">Create New Cost Item</a>
+</div>
+
 {% endblock content %}
