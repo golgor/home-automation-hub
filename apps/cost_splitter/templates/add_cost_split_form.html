@@ -9,7 +9,8 @@
     {{ form.errors.date.0 }}<br>
     {% endif %}
     <label for="date">Date:</label>
-    <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date"><br>
+    <!-- <input id="date" type="date" value="2024-01-01" min="2023-12-01" max="2024-12-31" name="date"><br> -->
+    <input id="date" type="date" value="{{ date.today }}" min="{{ date.min }}" max="{{ date.max }}" name="date"><br>
     <label for="description">Description: </label>
     <input id="description" type="text" name="description"><br>
 

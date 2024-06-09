@@ -125,8 +125,13 @@ class AddCostSplitFormView(View):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
         """GET method to get the form to add a new cost."""
-        context = {
+        context: dict[str, Any] = {
             "unmanaged_costs": self.get_unmanaged_costs(),
+        }
+        context["date"] = {
+            "today": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date()),
+            "min": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() - timedelta(weeks=12)),
+            "max": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() + timedelta(days=365)),
         }
 
         return HttpResponse(render(self.request, self.template_name, context))
