@@ -160,6 +160,8 @@ class AddCostSplitFormView(View):
     @staticmethod
     def get_unmanaged_costs():
         """Get all costs that are not assigned to a monthly report."""
-        return Cost.objects.filter(included_in_report=None).values(
-            "id", "location", "user__id", "user__first_name", "date", "amount", "description"
+        return (
+            Cost.objects.filter(included_in_report=None)
+            .values("id", "location", "user__id", "user__first_name", "date", "amount", "description")
+            .order_by("user", "date")
         )
