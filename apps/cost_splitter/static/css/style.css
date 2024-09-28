@@ -202,3 +202,54 @@ label {
         text-align: left;
     }
 }
+
+/* P260e */
+@media (max-width: 600px) {
+    form {
+        width: 90%;
+        padding: 0.5em;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 0.9em;
+    }
+
+    button,
+    .btn {
+        font-size: 0.9em;
+        padding: 8px 20px;
+    }
+}
+
+/* P4efc */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .links-container>a {
+        padding: 15px 0;
+    }
+
+    .button-container {
+        margin: 10px 0;
+    }
+}
+
+/* P501b */
+@media (max-width: 600px) {
+    .main {
+        padding: 10px;
+    }
+
+    h1,
+    h2 {
+        font-size: 1.5em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+}

@@ -11,12 +11,14 @@
             <th>Description</th>
         </tr>
     </thead>
-    {% for report in reports %}
-    <tr>
-        <td><a href="{% url 'cost_splitter:report' report.id %}">{{ report.id }}</a></td>
-        <td>{{ report.date }}</td>
-        <td>{{ report.description }}</td>
-    </tr>
-    {% endfor %}
+    <tbody>
+        {% for report in reports %}
+        <tr>
+            <td data-label="ID"><a href="{% url 'cost_splitter:report' report.id %}">{{ report.id }}</a></td>
+            <td data-label="Date">{{ report.date }}</td>
+            <td data-label="Description">{{ report.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock content %}
