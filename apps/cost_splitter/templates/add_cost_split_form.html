@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Create Report</h1>
 
-<form action="{% url 'cost_splitter:add_report' %}" method="post">
+<form action="{% url 'cost_splitter:add_report' %}" method="post" class="responsive-form">
     {% csrf_token %}
     {% if form.errors.date.0 %}
     {{ form.errors.date.0 }}<br>

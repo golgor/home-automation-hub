@@ -14,11 +14,11 @@
     </tr>
     {% for cost in costs %}
     <tr>
-        <td>{{ cost.user.first_name }}</td>
-        <td>{{ cost.date }}</td>
-        <td>{{ cost.amount }}</td>
-        <td>{{ cost.location }}</td>
-        <td>{{ cost.description }}</td>
+        <td data-label="Person">{{ cost.user.first_name }}</td>
+        <td data-label="Date">{{ cost.date }}</td>
+        <td data-label="Amount">{{ cost.amount }}</td>
+        <td data-label="Location">{{ cost.location }}</td>
+        <td data-label="Description">{{ cost.description }}</td>
     </tr>
     {% endfor %}
 </table>
@@ -32,10 +32,10 @@
     </tr>
     {% for transaction in report.transactions.all %}
     <tr>
-        <td>{{ transaction.debtor.first_name }}</td>
-        <td>{{ transaction.creditor.first_name }}</td>
-        <td>{{ transaction.amount }}</td>
-        <td>{{ transaction.uuid }}</td>
+        <td data-label="From">{{ transaction.debtor.first_name }}</td>
+        <td data-label="To">{{ transaction.creditor.first_name }}</td>
+        <td data-label="Amount">{{ transaction.amount }}</td>
+        <td data-label="Reference">{{ transaction.uuid }}</td>
     </tr>
     {% endfor %}
 </table>
