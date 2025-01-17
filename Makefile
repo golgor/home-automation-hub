@@ -34,7 +34,7 @@ all:
 	@echo "make clean"
 	@echo "    Remove python artifacts and virtualenv"
 
-dev:
+sync:
 	uv sync
 
 lint:
@@ -43,13 +43,13 @@ lint:
 lint-fix:
 	${RUN} ruff check . --fix
 
-types: dev ruff
+types: sync ruff
 	${RUN} mypy .
 
-check_style: dev
+check_style: sync
 	${RUN} ruff format --check .
 
-style: dev
+style: sync
 	${RUN} format
 
 coverage: docker_up
@@ -59,13 +59,13 @@ coverage: docker_up
 
 check: check_style lint
 
-test: dev docker_up
+test: sync docker_up
 	${RUN} pytest . -vv
 
-run: dev docker_up
+run: sync docker_up
 	${PYTHON} manage.py runserver
 
-run_docker: dev
+run_docker: sync
 	docker compose --profile web up --build --attach-dependencies
 
 docker_up:
