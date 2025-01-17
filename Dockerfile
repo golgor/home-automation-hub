@@ -1,28 +1,28 @@
-FROM python:3.12-bookworm as build
+FROM python:3.13-bookworm AS builder
 
 RUN useradd -Ms /bin/bash golgor
 
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:0.5.5 /uv /bin/uv
+
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y build-essential curl
-ENV VIRTUAL_ENV=/opt/venv \
-    PATH="/opt/venv/bin:$PATH"
-
-ADD https://astral.sh/uv/install.sh /install.sh
-RUN chmod -R 655 /install.sh && /install.sh && rm /install.sh
-COPY requirements.lock .
-RUN /root/.cargo/bin/uv venv /opt/venv && \
-    /root/.cargo/bin/uv pip install --no-cache -r requirements.lock
-# RUN pip install --no-cache-dir --upgrade -r requirements.lock
+RUN apt-get update && apt-get install -y --no-install-recommends
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project
 
 # App image
-FROM python:3.12-slim-bookworm
+FROM python:3.13-slim-bookworm AS runtime
 WORKDIR /app
-COPY --from=build /opt/venv /opt/venv
 COPY . /app
+
+# Copy Python packages from the builder stage
+COPY --from=builder /app/.venv /app/.venv
 
 # Activate the virtualenv in the container
 # See here for more information:
 # https://pythonspeed.com/articles/multi-stage-docker-python/
-ENV PATH="/opt/venv/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH"
 CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
