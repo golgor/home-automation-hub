@@ -1,7 +1,7 @@
 from django.db.models import Sum
 
+from .app_types import Person, Transaction
 from .models import Cost
-from .types import Person, Transaction
 
 
 def get_costs_from_report(report_id: int | None) -> dict[Person, float]:
@@ -54,10 +54,9 @@ def calculate_balances(expenses: dict[Person, float]) -> dict[Person, float]:
     }
     Which means that Alice owes Bob 10.
     """
-    balances: dict[Person, float] = {}
-    for person, amount in expenses.items():
-        # Deduct the average expense from each person's expense
-        balances[person] = amount - sum(expenses.values()) / len(expenses)
+    balances: dict[Person, float] = {
+        person: amount - sum(expenses.values()) / len(expenses) for person, amount in expenses.items()
+    }
     return balances
 
 

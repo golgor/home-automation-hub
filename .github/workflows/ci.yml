@@ -28,11 +28,19 @@ jobs:
     - name: Build the docker-compose stack
       run: docker compose --profile db up --build -d
 
-    - name: Install the latest version of rye
-      uses: eifinger/setup-rye@v2
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v4
 
-    - name: Setup virtual environment & Dependencies
-      run: rye sync
+
+    - name: "Set up Python"
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: ".python-version"
+
+    - name: Install dependencies
+      run: make sync
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Code style & lint check
       run: make check
@@ -41,7 +49,7 @@ jobs:
       run: make types
 
     - name: Run Migrations
-      run: rye run python manage.py migrate --skip-checks
+      run: uv run python manage.py migrate --skip-checks
 
     - name: Test & Coverage
       run: make coverage

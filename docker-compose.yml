@@ -1,12 +1,11 @@
 services:
   web:
-    build: .
-    container_name: home_automation
+    build:
+      context: .
+      target: runtime
     command: uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     profiles: ["web"]
     environment:
       - DB_HOST=database
@@ -18,9 +17,8 @@ services:
   web-init:
     build:
       context: .
+      target: runtime
     command: python manage.py migrate --noinput --skip-checks
-    volumes:
-      - .:/app
     profiles: ["web"]
     environment:
       - DB_HOST=database

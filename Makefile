@@ -1,7 +1,7 @@
 .PHONY: all dev ruff lint check_style coverage test run run_docker docker_up docker_down clean
 
 SHELL:=/bin/bash
-RUN=rye run
+RUN=uv run
 PYTHON=${RUN} python
 
 all:
@@ -34,23 +34,23 @@ all:
 	@echo "make clean"
 	@echo "    Remove python artifacts and virtualenv"
 
-dev:
-	rye sync
+sync:
+	uv sync
 
 lint:
-	rye lint
+	${RUN} ruff check .
 
 lint-fix:
-	rye lint --fix
+	${RUN} ruff check . --fix
 
-types: dev ruff
+types: sync ruff
 	${RUN} mypy .
 
-check_style: dev
-	rye fmt --check
+check_style: sync
+	${RUN} ruff format --check .
 
-style: dev
-	rye fmt
+style: sync
+	${RUN} format
 
 coverage: docker_up
 	${RUN} coverage run -m pytest
@@ -59,13 +59,13 @@ coverage: docker_up
 
 check: check_style lint
 
-test: dev docker_up
+test: sync docker_up
 	${RUN} pytest . -vv
 
-run: dev docker_up
+run: sync docker_up
 	${PYTHON} manage.py runserver
 
-run_docker: dev
+run_docker: sync
 	docker compose --profile web up --build --attach-dependencies
 
 docker_up:

@@ -67,6 +67,7 @@ class CostsListView(TemplateView):
         context["unmanaged_costs"] = unmanaged_costs
         context["managed_costs"] = managed_costs
         context["transactions"] = transactions
+
         return context
 
 
@@ -85,6 +86,9 @@ class CostSplitReportListView(TemplateView):
             return {"error": "No reports found!"}
 
         context["reports"] = reports
+
+        # Add pagination
+        context["pagination"] = True
 
         return context
 

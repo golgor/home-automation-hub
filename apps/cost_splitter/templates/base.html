@@ -13,7 +13,8 @@
     <div class="links-container">
         <a href="{% url 'cost_splitter:list_report' %}">Reports</a>
         <a href="{% url 'cost_splitter:add_report' %}">Create report</a>
-        <a href="{% url 'cost_splitter:list_cost' %}">All costs</a><br>
+        <a href="{% url 'cost_splitter:list_cost' %}">All costs</a>
+        <a href="{% url 'cost_splitter:add_cost' %}">Add New Cost Item</a>
     </div>
     <div class="main">
         {% block content %}{% endblock content %}
