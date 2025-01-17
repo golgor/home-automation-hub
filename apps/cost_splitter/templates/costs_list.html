@@ -3,6 +3,36 @@
 {% block content %}
 <h1>List of All Costs</h1>
 
+{% if unmanaged_costs %}
+<section>
+    <h2>Unmanaged Costs</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Person</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Location</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cost in unmanaged_costs %}
+            <tr>
+                <td data-label="Person">{{ cost.user.first_name }}</td>
+                <td data-label="Date">{{ cost.date }}</td>
+                <td data-label="Amount">{{ cost.amount }}</td>
+                <td data-label="Location">{{ cost.location }}</td>
+                <td data-label="Description">{{ cost.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% else %}
+<p>No unmanaged costs available.</p>
+{% endif %}
+
 {% if managed_costs %}
 <section>
     <h2>Managed Costs</h2>
@@ -34,36 +64,6 @@
 </section>
 {% endif %}
 
-{% if unmanaged_costs %}
-<section>
-    <h2>Unmanaged Costs</h2>
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>Person</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Location</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cost in unmanaged_costs %}
-            <tr>
-                <td data-label="Person">{{ cost.user.first_name }}</td>
-                <td data-label="Date">{{ cost.date }}</td>
-                <td data-label="Amount">{{ cost.amount }}</td>
-                <td data-label="Location">{{ cost.location }}</td>
-                <td data-label="Description">{{ cost.description }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-{% else %}
-<p>No unmanaged costs available.</p>
-{% endif %}
-
 {% if transactions %}
 <section>
     <h2>Necessary Transactions</h2>
@@ -87,10 +87,5 @@
     </table>
 </section>
 {% endif %}
-
-<!-- Add the new button here -->
-<div class="button-container">
-    <a href="{% url 'cost_splitter:add_cost' %}" class="btn">Create New Cost Item</a>
-</div>
 
 {% endblock content %}

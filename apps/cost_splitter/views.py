@@ -67,6 +67,16 @@ class CostsListView(TemplateView):
         context["unmanaged_costs"] = unmanaged_costs
         context["managed_costs"] = managed_costs
         context["transactions"] = transactions
+
+        # Add search bar
+        context["search_bar"] = True
+
+        # Add breadcrumb navigation trail
+        context["breadcrumb"] = [
+            {"name": "Home", "url": "/"},
+            {"name": "All Costs", "url": "/costs/"},
+        ]
+
         return context
 
 
@@ -85,6 +95,9 @@ class CostSplitReportListView(TemplateView):
             return {"error": "No reports found!"}
 
         context["reports"] = reports
+
+        # Add pagination
+        context["pagination"] = True
 
         return context
 
