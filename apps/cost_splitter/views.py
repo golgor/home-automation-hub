@@ -68,15 +68,6 @@ class CostsListView(TemplateView):
         context["managed_costs"] = managed_costs
         context["transactions"] = transactions
 
-        # Add search bar
-        context["search_bar"] = True
-
-        # Add breadcrumb navigation trail
-        context["breadcrumb"] = [
-            {"name": "Home", "url": "/"},
-            {"name": "All Costs", "url": "/costs/"},
-        ]
-
         return context
 
 
