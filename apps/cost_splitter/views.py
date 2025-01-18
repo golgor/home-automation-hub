@@ -105,7 +105,7 @@ class AddCostFormView(View):
         self.context["form"] = None
         self.context["date"] = {
             "today": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date()),
-            "min": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() - timedelta(weeks=12)),
+            "min": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() - timedelta(days=365)),
             "max": str(datetime.now(tz=ZoneInfo("Europe/Vienna")).date() + timedelta(days=365)),
         }
         self.context["users"] = users
