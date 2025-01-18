@@ -202,3 +202,37 @@ label {
         text-align: left;
     }
 }
+
+/* Styles for filtering dropdowns */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filter-container label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.filter-container select {
+    margin-right: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Styles for sorting headers */
+.styled-table th.sortable {
+    cursor: pointer;
+}
+
+.styled-table th.sortable::after {
+    content: " \25B2"; /* Up arrow */
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.styled-table th.sortable.desc::after {
+    content: " \25BC"; /* Down arrow */
+}

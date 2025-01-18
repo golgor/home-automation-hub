@@ -3,17 +3,31 @@
 {% block content %}
 <h1>List of All Costs</h1>
 
+<div>
+    <label for="filter-date">Filter by Date:</label>
+    <select id="filter-date">
+        <option value="">All</option>
+        <!-- Add options dynamically using JavaScript -->
+    </select>
+
+    <label for="filter-name">Filter by Name:</label>
+    <select id="filter-name">
+        <option value="">All</option>
+        <!-- Add options dynamically using JavaScript -->
+    </select>
+</div>
+
 {% if unmanaged_costs %}
 <section>
     <h2>Unmanaged Costs</h2>
     <table class="styled-table">
         <thead>
             <tr>
-                <th>Person</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Location</th>
-                <th>Description</th>
+                <th id="unmanaged-person">Person</th>
+                <th id="unmanaged-date">Date</th>
+                <th id="unmanaged-amount">Amount</th>
+                <th id="unmanaged-location">Location</th>
+                <th id="unmanaged-description">Description</th>
             </tr>
         </thead>
         <tbody>
@@ -39,12 +53,12 @@
     <table class="styled-table">
         <thead>
             <tr>
-                <th>Person</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Location</th>
-                <th>Description</th>
-                <th>Report ID</th>
+                <th id="managed-person">Person</th>
+                <th id="managed-date">Date</th>
+                <th id="managed-amount">Amount</th>
+                <th id="managed-location">Location</th>
+                <th id="managed-description">Description</th>
+                <th id="managed-report-id">Report ID</th>
             </tr>
         </thead>
         <tbody>
