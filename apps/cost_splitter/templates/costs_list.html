@@ -3,6 +3,32 @@
 {% block content %}
 <h1>List of All Costs</h1>
 
+{% if transactions %}
+<section>
+    <h2>Necessary Transactions</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td data-label="From">{{ transaction.debtor.name }}</td>
+                <td data-label="To">{{ transaction.creditor.name }}</td>
+                <td data-label="Amount">{{ transaction.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% else %}
+<p>No transactions necessary.</p>
+{% endif %}
+
 {% if unmanaged_costs %}
 <section>
     <h2>Unmanaged Costs</h2>
@@ -57,30 +83,6 @@
                 <td data-label="Description">{{ cost.description }}</td>
                 <td data-label="Report ID"><a href="{% url 'cost_splitter:report' cost.included_in_report.id %}">
                         {{ cost.included_in_report.id }}</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-{% endif %}
-
-{% if transactions %}
-<section>
-    <h2>Necessary Transactions</h2>
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-            <tr>
-                <td data-label="From">{{ transaction.debtor.name }}</td>
-                <td data-label="To">{{ transaction.creditor.name }}</td>
-                <td data-label="Amount">{{ transaction.amount }}</td>
             </tr>
             {% endfor %}
         </tbody>
