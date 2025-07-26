@@ -50,7 +50,7 @@ check_style: sync
 	${RUN} ruff format --check .
 
 style: sync
-	${RUN} format
+	${RUN} ruff format
 
 coverage: docker_up
 	${RUN} coverage run -m pytest
@@ -78,7 +78,7 @@ initial_migration:
 	${RUN} ./manage.py migrate --skip-checks
 
 clean: docker_down
-	poetry env remove --all
-	find -type d | grep __pycache__ | xargs rm -rf
-	find -type d | grep .*_cache | xargs rm -rf
+	uv cache clean
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type d -name "*_cache" -exec rm -rf {} +
 	rm -rf *.eggs *.egg-info dist build docs/_build .cache .mypy_cache coverage/* .pytest_cache/ .ruff_cache/ report.html
