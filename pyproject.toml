@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 authors = [{ name = "Robert Nyström", email = "robert.nystrom@toolsense.io" }]
 dependencies = [
-    "django>=5.0.3",
+    "django>=5.2.1",
     "python-dotenv>=1.0.1",
     "django-rest-framework>=0.1.0",
     "django-cors-headers>=4.3.1",
@@ -55,3 +55,12 @@ directory = "coverage/html"
 
 [tool.coverage.xml]
 output = "coverage/coverage.xml"
+
+[tool.setuptools]
+packages = ["apps", "config"]
+
+[tool.rye]
+dev-dependencies = [
+    "pytest>=8.3.5",
+    "pytest-django>=4.11.1",
+]
